@@ -19,7 +19,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`antialiased`}>{children}</body>
+			<body className={`min-h-screen custom-scrollbar antialiased`}>
+				{children}
+			</body>
 		</html>
 	);
 }
