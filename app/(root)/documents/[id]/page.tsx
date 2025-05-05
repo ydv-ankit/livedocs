@@ -1,22 +1,24 @@
-import Header from "@/components/header";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import CollaborativeRoom from "@/components/collaborative-room";
+import { getDocument } from "@/lib/actions/room.actions";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const page = () => {
+const page = async ({ params: { id } }: SearchParamProps) => {
+	const clerkUser = await currentUser();
+	if (!clerkUser) redirect("/sign-in");
+
+	const room = await getDocument({
+		userId: clerkUser.emailAddresses[0].emailAddress,
+		roomId: id,
+	});
+
+	if (!room) redirect("/");
+
 	return (
-		<div>
-			<Header className="text-white">
-				<div className="flex w-fit items-center justify-center gap-2">
-					<p className="document-title">Share</p>
-				</div>
-				<SignedOut>
-					<SignInButton />
-				</SignedOut>
-				<SignedIn>
-					<UserButton />
-				</SignedIn>
-			</Header>
-		</div>
+		<main className="flex w-full flex-col items-center">
+			<CollaborativeRoom roomId={room.id} roomMetadata={room.metadata} />
+		</main>
 	);
 };
 

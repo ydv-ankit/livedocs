@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import Provider from "./provider";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -29,8 +30,8 @@ export default function RootLayout({
 				},
 			}}>
 			<html lang="en" suppressHydrationWarning>
-				<body className={`min-h-screen custom-scrollbar antialiased`}>
-					{children}
+				<body className={`min-h-screen custom-scrollbar antialiased dark`}>
+					<Provider>{children}</Provider>
 				</body>
 			</html>
 		</ClerkProvider>

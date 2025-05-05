@@ -1,11 +1,14 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Header = ({ children, className }: HeaderProps) => {
 	return (
-		<div className="header">
-			<Link href={"/"} className="md:flex-1 flex gap-2 items-center">
+		<div className={cn("header", className)}>
+			<Link
+				href={"/"}
+				className="md:flex-1 flex gap-2 items-center cursor-pointer">
 				<Image
 					src={"/assets/images/logo.png"}
 					alt="logo with name"
