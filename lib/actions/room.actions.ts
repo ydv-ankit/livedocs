@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { liveblocks } from "../liveblocks";
 import { nanoid } from "nanoid";
-import { parseStringify } from "../utils";
+import { getAccessType, parseStringify } from "../utils";
 import { redirect } from "next/navigation";
 
 export const createDocument = async ({
@@ -86,5 +86,72 @@ export const deleteDocument = async (roomId: string) => {
 	} finally {
 		revalidatePath("/");
 		redirect("/");
+	}
+};
+
+export const updateDocumentAccess = async ({
+	roomId,
+	email,
+	userType,
+	updatedBy,
+}: ShareDocumentParams) => {
+	try {
+		const usersAccesses: RoomAccesses = {
+			[email]: getAccessType(userType) as AccessType,
+		};
+
+		const room = await liveblocks.updateRoom(roomId, {
+			usersAccesses,
+		});
+
+		if (room) {
+			const notificationId = nanoid();
+
+			await liveblocks.triggerInboxNotification({
+				userId: email,
+				kind: "$documentAccess",
+				subjectId: notificationId,
+				activityData: {
+					userType,
+					title: `${updatedBy.name} shared a document with you.`,
+					updatedBy: updatedBy.name,
+					avatar: updatedBy.avatar,
+					email: updatedBy.email,
+				},
+				roomId,
+			});
+		}
+
+		revalidatePath(`/documents/${roomId}`);
+		return parseStringify(room);
+	} catch (error) {
+		console.error("An error occurred while sharing the document:", error);
+	}
+};
+
+export const removeCollaborator = async ({
+	roomId,
+	email,
+}: {
+	roomId: string;
+	email: string;
+}) => {
+	try {
+		const room = await liveblocks.getRoom(roomId);
+
+		if (room.metadata.email === email) {
+			throw new Error(
+				"You cannot remove the creator from the collaborators list."
+			);
+		}
+
+		const updatedRoom = await liveblocks.updateRoom(roomId, {
+			usersAccesses: { [email]: null },
+		});
+
+		revalidatePath(`/documents/${roomId}`);
+		return parseStringify(updatedRoom);
+	} catch (error) {
+		console.error("An error occurred while sharing the document:", error);
 	}
 };
