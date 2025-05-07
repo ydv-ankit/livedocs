@@ -28,7 +28,7 @@ export const Notifications = () => {
 
 	return (
 		<Popover>
-			<PopoverTrigger className="relative flex size-10 items-center justify-center rounded-lg">
+			<PopoverTrigger className="relative flex size-10 items-center justify-center rounded-lg text-white">
 				<Image
 					src="/assets/icons/bell.svg"
 					alt="inbox"
@@ -39,7 +39,7 @@ export const Notifications = () => {
 					<div className="absolute right-2 top-2 z-20 size-2 rounded-full bg-blue-500" />
 				)}
 			</PopoverTrigger>
-			<PopoverContent align="end" className="shad-popover">
+			<PopoverContent align="end" className="shad-popover text-white">
 				<LiveblocksUIConfig
 					overrides={{
 						INBOX_NOTIFICATION_TEXT_MENTION: (user: ReactNode) => {
@@ -48,7 +48,7 @@ export const Notifications = () => {
 					}}>
 					<InboxNotificationList>
 						{unreadNotifications.length <= 0 && (
-							<p className="py-2 text-center text-dark-500">
+							<p className="py-2 text-center text-[#2E3D5B]">
 								No notifications yet
 							</p>
 						)}
@@ -58,7 +58,7 @@ export const Notifications = () => {
 								<InboxNotification
 									key={inboxNotification.id}
 									inboxNotification={inboxNotification}
-									className="bg-dark-200 text-white"
+									className="bg-[#0B1527]"
 									href={`/documents/${inboxNotification.roomId}`}
 									showActions={false}
 									kinds={{

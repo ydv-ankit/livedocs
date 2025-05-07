@@ -264,7 +264,7 @@
 	}
 
 	.remove-btn {
-		@apply rounded-lg bg-transparent px-0 text-red-500 hover:bg-transparent;
+		@apply rounded-lg bg-transparent text-red-500;
 	}
 
 	.comments-container {
