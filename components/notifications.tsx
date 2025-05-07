@@ -17,10 +17,12 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { InboxNotificationData } from "@liveblocks/client";
 
 export const Notifications = () => {
 	const { inboxNotifications } = useInboxNotifications();
 	const { count } = useUnreadInboxNotificationsCount();
+	console.log(inboxNotifications);
 
 	const unreadNotifications = inboxNotifications.filter(
 		(notification) => !notification.readAt // Filter unread notifications
@@ -54,55 +56,57 @@ export const Notifications = () => {
 						)}
 
 						{unreadNotifications.length > 0 &&
-							unreadNotifications.map((inboxNotification: any) => (
-								<InboxNotification
-									key={inboxNotification.id}
-									inboxNotification={inboxNotification}
-									className="bg-[#0B1527]"
-									href={`/documents/${inboxNotification.roomId}`}
-									showActions={false}
-									kinds={{
-										thread: (props) => (
-											<InboxNotification.Thread
-												{...props}
-												showRoomName={false}
-												showActions={false}
-											/>
-										),
-										textMention: (props) => {
-											return (
-												<InboxNotification.TextMention
+							unreadNotifications.map(
+								(inboxNotification: InboxNotificationData) => (
+									<InboxNotification
+										key={inboxNotification.id}
+										inboxNotification={inboxNotification}
+										className="bg-[#0B1527]"
+										href={`/documents/${inboxNotification.roomId}`}
+										showActions={false}
+										kinds={{
+											thread: (props) => (
+												<InboxNotification.Thread
 													{...props}
 													showRoomName={false}
+													showActions={false}
 												/>
-											);
-										},
-										$documentAccess: (props) => {
-											const { title, avatar } =
-												props.inboxNotification.activities[0].data;
+											),
+											textMention: (props) => {
+												return (
+													<InboxNotification.TextMention
+														{...props}
+														showRoomName={false}
+													/>
+												);
+											},
+											$documentAccess: (props) => {
+												const { title, avatar } =
+													props.inboxNotification.activities[0].data;
 
-											return (
-												<InboxNotification.Custom
-													{...props}
-													title={title}
-													aside={
-														<InboxNotification.Icon className="bg-transparent">
-															<Image
-																src={(avatar as string) || ""}
-																width={36}
-																height={36}
-																alt="avatar"
-																className="rounded-full"
-															/>
-														</InboxNotification.Icon>
-													}>
-													{props.children}
-												</InboxNotification.Custom>
-											);
-										},
-									}}
-								/>
-							))}
+												return (
+													<InboxNotification.Custom
+														{...props}
+														title={title}
+														aside={
+															<InboxNotification.Icon className="bg-transparent">
+																<Image
+																	src={(avatar as string) || ""}
+																	width={36}
+																	height={36}
+																	alt="avatar"
+																	className="rounded-full"
+																/>
+															</InboxNotification.Icon>
+														}>
+														{props.children}
+													</InboxNotification.Custom>
+												);
+											},
+										}}
+									/>
+								)
+							)}
 					</InboxNotificationList>
 				</LiveblocksUIConfig>
 			</PopoverContent>

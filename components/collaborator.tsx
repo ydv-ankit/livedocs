@@ -73,7 +73,7 @@ export const Collaborator = ({
 				<div className="flex items-center gap-2">
 					<UserTypeSelector
 						userType={userType as UserType}
-						setUserType={setUserType || "viewer"}
+						setUserType={setUserType}
 						onClickHandler={shareDocumentHandler}
 					/>
 					<Button

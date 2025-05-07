@@ -38,7 +38,7 @@ export default async function Home() {
 						/>
 					</div>
 					<ul className="document-ul">
-						{roomDocuments.data.map((doc: any) => (
+						{roomDocuments.data.map((doc: RoomDocument) => (
 							<li key={doc.id} className="document-list-item">
 								<Link
 									href={`/documents/${doc.id}`}

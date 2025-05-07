@@ -99,7 +99,7 @@ export const ShareModal = ({
 
 				<div className="my-2 space-y-2">
 					<ul className="flex flex-col">
-						{collaborators.map((collaborator, i) => (
+						{collaborators.map((collaborator) => (
 							<Collaborator
 								key={collaborator.id + 1}
 								roomId={roomId}

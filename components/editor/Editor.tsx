@@ -12,7 +12,6 @@ import {
 	liveblocksConfig,
 	LiveblocksPlugin,
 	FloatingComposer,
-	useEditorStatus,
 	FloatingThreads,
 	useIsEditorReady,
 } from "@liveblocks/react-lexical";
